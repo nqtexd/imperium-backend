@@ -4,9 +4,7 @@ import supabase from '../config/supabase.js'
 const router = express.Router()
 
 router.get('/leaderboard', async (req, res) => {
-
   try {
-
     const { data, error } = await supabase
       .from('user_progress')
       .select(`
@@ -17,6 +15,7 @@ router.get('/leaderboard', async (req, res) => {
         )
       `)
       .order('score', { ascending: false })
+      .limit(10)
 
     if (error) {
       return res.status(500).json({
@@ -27,7 +26,6 @@ router.get('/leaderboard', async (req, res) => {
     return res.status(200).json(data)
 
   } catch (error) {
-
     return res.status(500).json({
       error: error.message
     })
